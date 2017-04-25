@@ -1,0 +1,103 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset134 PingFangSC-Regular;\f2\fmodern\fcharset0 Courier;
+}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww19160\viewh14220\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 Part 1\
+
+\b0 Training accuracy = 0.9700\
+Testing accuracy = 0.9500\
+fig 1_testingPredicted.jpg: testing predicted \
+fig 1_testingGT.jpg: testing ground truth\
+\
+
+\b Part 2\
+
+\b0 fig 2_testingPredicted.jpg: testing accuracy = 0.9760\
+fig 2_trainingPredicted.jpg: training accuracy = 0.9770\
+\
+\
+
+\b Part 3 Answers 
+\b0 \
+\ul Part I: CNN building blocks  \
+\ulnone 1 - Because it\'92s a RGB image, so it has three color channels. \
+2.1 - The dimension of y would be M-2*(M_f/2) x N-2*(N_f/2) x K\'92\
+2.2 - Because the convolution happens on pixel levels, not color channels. And filters have the same number of channels for RGB for each pixel. K\'92 is the number of filters and K is the number of channels. \
+3. Because any gaussian filter basically performs like an edge detector of edges of a certain angle. \
+4.1 - A negative laplacian filter is implemented. \
+4.2 - Each color channel is convoluted with this filter separately. \
+4.3 - Edges are detected \
+5 - Non-linearity needs to be introduced to the network because the decision boundary should be non-linear, which means it should be a result of a non-linear combination of the weighted inputs. Otherwise, the output can be reversed from a linear combination of the inputs.  \
+6 - The resulting image is the downsized representation of the original image, where the max of each region, in this case of size 15, is used to replace to original inputs of the region. One example is that all the lighter blobs are located where the highlights are. That\'92s because the value of the highlights are taken to replace the original inputs of the region. \
+\
+\ul Part II: back-propagation and derivatives\ulnone \
+7 - Because the output derivatives are composed of partial derivatives of loss with respect to each parameter, the output derivatives would have to have the same size as the parameters. \
+8.1 - ex is a vector of random values for calculating/estimating the derivatives for dx. \
+8.2 - dzdx_empirical is a numerical derivative and dzdx_computed is an analytical derivative. \
+9 - In practice, dzdx3 represents the partial derivative of z with respect to x3, which is the original x after 3 times of forward propagation.\
+\
+\ul Part III: learning a tiny CNN\ulnone \
+10.1 - We can say that every pixel is at least as large as 1 if the pixel is marked as a blob center, or at most zero if the pixel is marked as being far away from a blob. \
+10.2 - The margin is 1. Because the highest value a negative pixel can be is 0, and the lowest value a positive pixel can be is 1. \
+11.1 - Momentum rate must be smaller than 1 because momentum is supposed to resist the variations when the gradient descent changes directions by taking its previous \'93trajectory\'94 (previous weight) into consideration. If it\'92s close to 1, it means that the previous weight is weighed much higher that the new weight will be heavily influenced by the previous one. \
+11.2 - A large learning rate could encounter the problem where it is so large that the cost function go past the minimum/minima and will never reaches it/them. But generally large learning rate converges faster. \
+\
+Part IV: learning a character CNN \
+12 - Because a CNN convolves on the input testing image (there\'92s a moving window sliding over the test image), so the fact that the size of the testing images are larger than 32x32 is irrelevant. \
+\
+
+\b Part 4 Answers \
+
+\b0 Task 0: (see fig 4-1.jpg) Because the training has a 
+\f1 much 
+\f0 bigger sample size than the testing, so the training does worse than the testing at the very beginning. Then the loss of the training is further decreased with gradient descent but then the model becomes overfitted to the training set, therefore the testing has a higher loss than the training set. \
+\
+Task 1: The max(bestScore) is 1, the min(bestScore) is 0.2058, and the mean(bestScore) is 0.7170. \
+fig 4-1_avg1: case 1 for an average case \
+fig 4-1_avg2: case 2 for an average case \
+fig 4-1_avg3: case 3 for an average case \
+fig 4-1_best: best case \
+fig 4-1_worst: worst case\
+\
+Task 2: After running it till it seems to be converged, the max(bestScore2) is 1, the min(bestScore2) is 0.2155, and the mean(bestScore2) is 0.7627. The previous best one still has the score of 1 in this new network, whereas the previous worst is increased to 0.3235, which makes it no longer the worst in the new network. All in all, the classification had improved. \
+fig 4-2_avg1: the same case 1\'92s performance in the new network with more iterations \
+fig 4-2_avg2: the same case 2\'92s performance in the new network with more iterations \
+fig 4-2_avg3: the same case 3\'92s performance in the new network with more iterations \
+fig 4-2_best: the same best case in the new network with more iterations \
+fig 4-2_worst: the same worst case in the new network with more iterations \
+\
+Task 3: \
+learning rate 1: 
+\f2\fs20 0.05*[0.05*ones(1,30) 0.005*ones(1,10) 0.0005*ones(1,5)]\
+
+\f0\fs24 results 1: the average score is slightly lower (0.6904) and the worst and best are identical. However, one average case did worse than previous networks (case 3), and the rest of the previous cases all remained the same or did noticeably better (especially case 2, which went from the 70% range to 100%). 
+\f2 \
+\
+
+\f0 learning rate 2: 
+\f2\fs20 0.01*[0.05*ones(1,30) 0.005*ones(1,10) 0.0005*ones(1,5)]
+\fs24 \
+
+\f0 result 2: the average and worst score are significantly lower (0.5805 and 0.1705) and the best score is 0.9927.  \
+\
+learning rate 3: 
+\f2\fs20 0.15*[0.05*ones(1,30) 0.005*ones(1,10) 0.0005*ones(1,5)]
+\f0\fs24 \
+result 3: the average score is slightly lower (0.6794), and the worst and best are identical (0.2189 and 1.000). The objective loss is higher, though. \
+\
+Conclusion: the reasonable range should be around 0.05-0.15. \
+\
+fig 4-3_avg1: the same case 1\'92s performance in the new network with learning rate 1\
+fig 4-3_avg2: the same case 2\'92s performance in the new network with learning rate 1\
+fig 4-3_avg3: the same case 3\'92s performance in the new network with learning rate 1\
+fig 4-3_best: the same best case in the new network with learning rate 1\
+fig 4-3_worst: the same worst case in the new network with learning rate 1\
+\
+Task 4: I tried adding one layer at the beginning, and it yielded a better result, where the losses are significantly better (see fig 4-4_1 comparing to 4-4_0). The loss decreased from 1 to approximately 0.8. After that further experiments (more layers) produced similar outcome that its improvement became marginal. \
+\
+fig 4-4_0.jpg: the original network\'92s \
+fig 4-4_1.jpg: the new network with one additional layer\
+}
